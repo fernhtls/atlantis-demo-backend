@@ -30,6 +30,9 @@ repos:
   plan_requirements: [mergeable]
   apply_requirements: [mergeable]
   import_requirements: [mergeable]
+  # All repos can set their own plan and import
+  # apply will still follow this server rule
+  allowed_overrides: [plan_requirements, import_requirements]
 EOF
 sudo mkdir /home/atlantis/data
 sudo chown -R atlantis:atlantis /home/atlantis/data
