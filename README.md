@@ -60,6 +60,22 @@ Terraform project to deploy Atlantis on Google Cloud Platform using a GCE VM.
 | `lb-backend.tf` | Internal Load Balancer backend configuration |
 | `scripts/startup_script_atlantis.sh` | VM startup script (installs OpenTofu, Helm, Atlantis) |
 
+The current config does not have any secrets here, but you need to generate some of them under `./secrets`.
+
+Files under secrets:
+
+* `token.txt` - App token I generated for my user on github, [check here on the atlantis config and how to generate it](https://github.com/fernhtls/atlantis-demo-backend). 
+* `webhook_token.txt` - webhook token used on the header of the webhook calls, not mandatory but good to include as it's one more layer of security for ingress calls. [Check here for the config and how to generate](https://github.com/fernhtls/atlantis-demo-backend).
+
+I'm including the generation of both below when explaining the arguments as well, so if you're creating your own setup generated it before starting it.
+
+I created before hand as well a few things on GCP:
+
+* GCP projects: `atlantis-demo-backend` and `atlantis-demo-app` - created before hand just as it was a bit eaiser for the initial setup.
+* GCP bucket for the `terraform states` in the backend - Create the bucket `atlantis-demo-tfstates` on the backend GCP project `atlantis-demo-backend`.
+
+Permissions on GCP are not that retrict, as I'm using my own account, the owner of the org / projects, and the atlantis SA will have ownership of the target pojects as well, so evaluate if you need any different strategies and more granular IAM permissions.
+
 ## Prerequisites
 
 - [OpenTofu](https://opentofu.org/) >= 1.11.5 (or Terraform)
