@@ -21,21 +21,8 @@ variable "ip_cidr_range" {
   default     = "10.139.0.0/19"
 }
 
-variable "atlantis_demo_dns_domain" {
-  type        = string
-  description = "DNS domain for the atlantis demo - used on LB creations and DNS record sets"
-  default     = "atlantis-demo-fsouza.nl"
-}
-
-// variable "cloudbuild_sa" {
+// variable "atlantis_demo_dns_domain" {
 //   type        = string
-//   description = "Default cloud build SA email"
-//   default     = "979108208313@cloudbuild.gserviceaccount.com"
+//   description = "DNS domain for the atlantis demo - used on LB creations and DNS record sets"
+//   default     = "atlantis-demo-fsouza.nl"
 // }
-// 
-// variable "compute_engine_sa" {
-//   type        = string
-//   description = "Default compute engine SA email"
-//   default     = "979108208313-compute@developer.gserviceaccount.com"
-// }
-// 
