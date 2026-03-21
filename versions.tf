@@ -1,3 +1,21 @@
 terraform {
   required_version = ">= 1.11.5"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 7.24.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 7.24.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.7.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.2.1"
+    }
+  }
 }
