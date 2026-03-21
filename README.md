@@ -167,15 +167,24 @@ These are policies put on the server side to control what users can configure an
 
 It's not a mandatory config, but good to put in practice and already include some rules like for apply approvals, and some overwrites that users should not be allowed to do.
 
-The reference below has several use case examples, the only one I'm including now is the `mergeable` policy for all repos, so plan / apply / import will only run if the PR is `mergeable`, so no conflicts:
+The reference below has several use case examples, the only one I'm including now is the `mergeable` / `approved` policy for all repos, so plan / import will only run if the PR is `mergeable`, but for `apply` it needs to be `approved` too:
 
 ```yaml
 repos:
 - id: /.*/
   plan_requirements: [mergeable]
-  apply_requirements: [mergeable]
+  apply_requirements: [mergeable, approved]
   import_requirements: [mergeable]
 ```
+I have as well on the server repo config the following:
+
+```yaml
+  # All repos can set their own plan and import
+  # apply will still follow this server rule
+  allowed_overrides: [import_requirements,workflow]
+```
+
+This means that any repo can only override the `import_requirements` config, but not the `plan` / `apply`.
 
 This is not just regarding those policies, but you can add some pre-hooks / post-hooks to run before / after the worlflow runs.
 

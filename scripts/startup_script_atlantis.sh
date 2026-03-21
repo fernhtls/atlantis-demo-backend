@@ -28,11 +28,11 @@ sudo cat << EOF >> /home/atlantis/repos.yaml
 repos:
 - id: /.*/
   plan_requirements: [mergeable]
-  apply_requirements: [mergeable]
+  apply_requirements: [mergeable, approved]
   import_requirements: [mergeable]
   # All repos can set their own plan and import
   # apply will still follow this server rule
-  allowed_overrides: [plan_requirements, import_requirements]
+  allowed_overrides: [import_requirements,workflow]
 EOF
 sudo mkdir /home/atlantis/data
 sudo chown -R atlantis:atlantis /home/atlantis/data
