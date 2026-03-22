@@ -83,7 +83,9 @@ resource "google_compute_instance" "atlantis-host" {
   }
 
   depends_on = [
-    google_secret_manager_secret_version.gh-token-version
+    google_secret_manager_secret_version.gh-token-version,
+    google_secret_manager_secret_version.webhook-token-version,
+    google_compute_router_nat.atlantis-demo-nat-config
   ]
 }
 

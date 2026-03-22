@@ -13,8 +13,14 @@ resource "google_service_account_key" "atlantis-sa-key" {
   service_account_id = google_service_account.atlantis-sa.id
 }
 
-resource "google_secret_manager_secret_iam_member" "service-account-access" {
+resource "google_secret_manager_secret_iam_member" "gh-service-account-access" {
   secret_id = google_secret_manager_secret.gh-token.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.atlantis-sa.email}"
+}
+
+resource "google_secret_manager_secret_iam_member" "webhook-service-account-access" {
+  secret_id = google_secret_manager_secret.webhook-token.id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.atlantis-sa.email}"
 }

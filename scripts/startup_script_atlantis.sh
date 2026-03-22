@@ -33,6 +33,7 @@ repos:
   # All repos can set their own plan and import
   # apply will still follow this server rule
   allowed_overrides: [import_requirements,workflow]
+  allow_custom_workflows: true
 EOF
 sudo mkdir /home/atlantis/data
 sudo chown -R atlantis:atlantis /home/atlantis/data
@@ -43,12 +44,12 @@ sudo mv atlantis /home/atlantis/
 sudo chown atlantis:atlantis /home/atlantis/atlantis
 ### Bringin GH tokens to run atlantis
 GITHUB_TOKEN=$(gcloud secrets versions access latest --secret="${gh_token_secret_name}" --project="${PROJECT_ID}")
-WEBHOOK_SECRET=$(gcloud secrets versions access latest --secret="${webhook_token_secret_name}" --project="${PROJECT_ID}")
+WEBHOOK_TOKEN=$(gcloud secrets versions access latest --secret="${webhook_token_secret_name}" --project="${PROJECT_ID}")
 
 ### Creating the systemd service and starting
 sudo tee /etc/systemd/system/atlantis.service <<EOF
 [Unit]
-Description=Atlantis OpenTofu Automation
+Description=Atlantis OpenTofu PR Automation
 After=network.target
 
 [Service]
@@ -58,7 +59,7 @@ Group=atlantis
 WorkingDirectory=/home/atlantis
 Environment="ATLANTIS_DATA_DIR=/home/atlantis/data"
 Environment="ATLANTIS_GH_TOKEN=$GITHUB_TOKEN"
-Environment="ATLANTIS_GH_WEBHOOK_SECRET=$WEBHOOK_SECRET"
+Environment="ATLANTIS_GH_WEBHOOK_SECRET=$WEBHOOK_TOKEN"
 Environment="ATLANTIS_GH_USER=fernhtls"
 Environment="ATLANTIS_REPO_ALLOWLIST=${repos_allowlist}"
 Environment="ATLANTIS_DEFAULT_TF_DISTRIBUTION=opentofu"
