@@ -31,3 +31,14 @@ resource "google_project_iam_member" "atlantis-sa-owner-projects" {
   role     = "roles/owner"
   member   = "serviceAccount:${google_service_account.atlantis-sa.email}"
 }
+
+data "google_storage_bucket" "atlantis-demo-tfstates" {
+  name = "atlantis-demo-tfstates"
+}
+
+# Access to the remote GCS bucket - state files
+resource "google_storage_bucket_iam_member" "atlantis-sa-access-bucket-state" {
+  bucket = data.google_storage_bucket.atlantis-demo-tfstates.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_service_account.atlantis-sa.email}"
+}

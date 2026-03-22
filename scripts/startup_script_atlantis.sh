@@ -24,11 +24,12 @@ sudo apt-get update
 sudo apt-get install -y helm
 ### Atlantis user and binary
 sudo useradd -m atlantis
+sudo rm -f /home/atlantis/repos.yaml
 sudo cat << EOF >> /home/atlantis/repos.yaml
 repos:
 - id: /.*/
   plan_requirements: [mergeable]
-  apply_requirements: [mergeable, approved]
+  apply_requirements: [mergeable]
   import_requirements: [mergeable]
   # All repos can set their own plan and import
   # apply will still follow this server rule
