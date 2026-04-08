@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 ### Install terraform / git / unzip / helm
 sudo apt-get update
 sudo apt-get install -y git-all
@@ -24,7 +26,7 @@ sudo apt-get update
 sudo apt-get install -y helm
 ### Atlantis user and binary
 sudo useradd -m atlantis
-sudo cat << EOF > /home/atlantis/repos.yaml
+sudo tee /home/atlantis/repos.yaml <<EOF
 repos:
 - id: /.*/
   plan_requirements: [mergeable]
