@@ -19,6 +19,11 @@ variable "ip_cidr_range" {
   type        = string
   description = "Project CIDR range for creating a VPC"
   default     = "10.139.0.0/19"
+  sensitive   = false
+  validation {
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}($|/(16|19|24))$", var.ip_cidr_range))
+    error_message = "incorrect CIDR format"
+  }
 }
 
 // variable "atlantis_demo_dns_domain" {
