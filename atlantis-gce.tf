@@ -85,7 +85,8 @@ resource "google_compute_instance" "atlantis-host" {
   depends_on = [
     google_secret_manager_secret_version.gh-token-version,
     google_secret_manager_secret_version.webhook-token-version,
-    google_compute_router_nat.atlantis-demo-nat-config
+    google_compute_router_nat.atlantis-demo-nat-config,
+    module.enable-services.google_project_service
   ]
 }
 
@@ -228,4 +229,5 @@ resource "google_compute_security_policy" "atlantis-demo-denyall-and-whitelist" 
     }
     description = "Deny all rule"
   }
+  depends_on = [google_compute_instance_group.atlantis-group]
 }

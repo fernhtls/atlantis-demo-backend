@@ -1,10 +1,14 @@
 locals {
-  gcp_services = [
-    "compute.googleapis.com",
-    "secretmanager.googleapis.com",
-    "dns.googleapis.com",
-    "domains.googleapis.com"
+  default_gcp_services = [
+    "compute.googleapis.com"
   ]
+  gcp_services = setunion(local.default_gcp_services,
+    [
+      "compute.googleapis.com",
+      "secretmanager.googleapis.com",
+      "dns.googleapis.com",
+      "domains.googleapis.com"
+  ])
 }
 
 terraform {
@@ -37,8 +41,7 @@ provider "google-beta" {
 data "google_project" "project" {}
 
 # Enabling GCP services
-resource "google_project_service" "service" {
-  for_each           = toset(local.gcp_services)
-  service            = each.key
-  disable_on_destroy = false
+module "enable-services" {
+  source       = "./modules/enable-services"
+  gcp_services = local.gcp_services
 }
