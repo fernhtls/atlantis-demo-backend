@@ -8,26 +8,15 @@ resource "google_compute_global_address" "atlantis-lb-global-address" {
 }
 
 ### Generating a self-signed cert - managed certs only work with domains
-resource "tls_private_key" "atlantis-key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
-
-resource "tls_self_signed_cert" "atlantis-demo-ssl-cert" {
-  private_key_pem       = tls_private_key.atlantis-key.private_key_pem
-  validity_period_hours = 8760 # 1 year
-  subject {
-    common_name  = "atlantis"
-    organization = "atlantis-demo"
-  }
-  allowed_uses = ["server_auth", "client_auth"]
+module "atlantis-demo-ssl-cert" {
+  source       = "./modules/generate-self-signed-tls"
   ip_addresses = [google_compute_global_address.atlantis-lb-global-address.address]
 }
 
 resource "google_compute_ssl_certificate" "atlantis-compute-ssl-cert" {
   name        = "atlantis-compute-ssl-cert"
-  private_key = tls_private_key.atlantis-key.private_key_pem
-  certificate = tls_self_signed_cert.atlantis-demo-ssl-cert.cert_pem
+  private_key = module.atlantis-demo-ssl-cert.private_key_pem
+  certificate = module.atlantis-demo-ssl-cert.cert_pem
 }
 
 resource "google_compute_url_map" "atlantis_url_map_https" {
