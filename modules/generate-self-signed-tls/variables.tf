@@ -16,6 +16,10 @@ variable "rsa_bits" {
     condition     = var.rsa_bits > 0
     error_message = "rsa-bit has to be bigger than 0"
   }
+  validation {
+    condition     = !contains(["."], tostring(var.rsa_bits))
+    error_message = "value should be an integer"
+  }
 }
 
 variable "validity_period_hours" {
@@ -25,6 +29,10 @@ variable "validity_period_hours" {
   validation {
     condition     = var.validity_period_hours > 0
     error_message = "hours validity has to be bigger than 0"
+  }
+  validation {
+    condition     = !contains(["."], tostring(var.validity_period_hours))
+    error_message = "value should be an integer"
   }
 }
 
