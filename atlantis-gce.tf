@@ -88,6 +88,24 @@ resource "google_compute_instance" "atlantis-host" {
     google_compute_router_nat.atlantis-demo-nat-config,
     module.enable-services.google_project_service
   ]
+  # Best practice with gcp is to actually just use the startup-script
+  # as there's no need for external connections and with private instances
+  # it would not work at all, as the remote-exec has to do ssh to the instance anyway
+  # so it could be even considered not a good practice
+  // provisioner "remote-exec" {
+  //   # Provisioner connection block
+  //   connection {
+  //     type        = "ssh"
+  //     user        = "root"
+  //     private_key = module.atlantis-demo-ssl-cert.private_key_pem
+  //     host        = <remote ip>
+  //   }
+  //   inline = ["echo \"hello\""]
+  // }
+  // provisioner "local-exec" {
+  //  # just local exection where terraform is running
+  //  # no config for any ssh connectivity nor nothing
+  // }
 }
 
 // ### Allow ip blocks from cloud shell only
