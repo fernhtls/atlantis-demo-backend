@@ -23,6 +23,7 @@ provider "google" {
   region  = var.default_region
   zone    = var.default_location
   default_labels = {
+    env       = terraform.workspace == "default" ? "dev" : terraform.workspace
     terraform = "true"
     app       = "atlantis-demo"
   }
@@ -33,6 +34,7 @@ provider "google-beta" {
   region  = var.default_region
   zone    = var.default_location
   default_labels = {
+    env       = terraform.workspace == "default" ? "dev" : terraform.workspace
     terraform = "true"
     app       = "atlantis-demo"
   }
